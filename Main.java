@@ -33,22 +33,32 @@ class Main {
       System.out.println("Choose an option from above: ");
       String userChoice = scan.nextLine(); // take in user input
 
-      int policeDistance = rand.nextInt(21) + 70;
+      int policeDistance = rand.nextInt(21) + 50;
       
       if(userChoice.equalsIgnoreCase("a")){
         if(currency < 50){
           System.out.println("You don't have enough money.");
+          System.out.println("Would you like to rob the gas station? Yes or No");
+          String answer = scan.nextLine();
+          if(answer.equals("Yes")){
+            int moneyStolen = rand.nextInt(51) + 50;
+            currency += moneyStolen;
+            policeTraveled += policeDistance / 6;
+            System.out.println("No way! You stole: " + moneyStolen + " dollars!");
+            System.out.println("Your current balance is: " + currency + " dollars.");
+          }
         }
         else{
           currency -= 50;
           gasTank = 25;
+          policeTraveled += policeDistance / 6;
         }
       }
       if(userChoice.equalsIgnoreCase("b")){ // Moderate Speed
         //milesTraveled += 8*Math.random() + 5;
         milesTraveled += rand.nextInt(11) + 60; //MIN: 60+ 0 = 60 MAX:10 + 60 = 70
         System.out.println("You have traveled: " + milesTraveled);
-        gasTank -= rand.nextInt(3) + 2; // decrease our gastank by random number between 2 and 4
+        gasTank -= rand.nextInt(3) + 2; // decrease our gasTank by random number between 2 and 4
         hunger += 2;
         policeTraveled += policeDistance;
       }
@@ -60,15 +70,44 @@ class Main {
         policeTraveled += policeDistance;
       }
       if(userChoice.equalsIgnoreCase("d")){
-        hunger = 0;
-        System.out.println("The Hunger value: " +  hunger);
-        policeTraveled += policeDistance;
+        if(currency < 5){
+          System.out.println("You don't have enough money for Mcdonald's");
+          System.out.println("Would you like to rob the Mcdonalds? Yes or No");
+          String answer = scan.nextLine();
+          if(answer.equals("Yes")){
+            int moneyStolen = rand.nextInt(51) + 50;
+            currency += moneyStolen;
+            policeTraveled += policeDistance / 6;
+            System.out.println("No way! You stole: " + moneyStolen + " dollars!");
+            System.out.println("Your current balance is: " + currency + " dollars.");
+          }
+          
+        }
+        else{
+          currency -= 5;
+          hunger = 0;
+          System.out.println("The Hunger value: " +  hunger);
+          policeTraveled += policeDistance / 6;
+        }
+        
       }
       if(userChoice.equalsIgnoreCase("e")){
+        long size = Math.round((10 * gasTank) / 25.0); // 10 slashes
         System.out.println("Miles Traveled " + milesTraveled);
         System.out.println("You have " + currency + " dollars");
         System.out.println("Hunger: "+ hunger);
-        System.out.println("The natives are " + (milesTraveled - policeTraveled) + " miles behind you");
+        System.out.println("The police are " + (milesTraveled - policeTraveled) + " miles behind you");
+        System.out.print("Your gas tank is at: " + gasTank + " gallons. ");
+        System.out.print("[");
+        for(long i = 0; i < 10; i++){
+          if(i < size){
+            System.out.print("/");
+          }
+          else{
+            System.out.print(" ");
+          }
+        }
+        System.out.println("]");
       }
       if(userChoice.equalsIgnoreCase("q")){
         stillPlaying = false;
@@ -94,7 +133,7 @@ class Main {
 
       if(hunger > 8){
         stillPlaying = false;
-        System.out.println("Your camel dead. You lose!");
+        System.out.println("You starved to death. You lose!");
       }
 
       if(milesTraveled - policeTraveled <= 70){
